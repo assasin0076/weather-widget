@@ -6,7 +6,7 @@ const locationsStore = useLocationsStore();
 
 function setBaseLocations() {
   const localStorageLocations = localStorage.getItem("locations");
-  if (!localStorageLocations) return;
+  if (!localStorageLocations) return locationsStore.setDefault();
   locationsStore.setLocations(JSON.parse(localStorageLocations));
 }
 
