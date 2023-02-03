@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useLocationsStore } from "@/stores/locationsStore";
 import getWeatherData from "@/api/getWeatherData";
+import type { TWeather } from "@/types/TWeather";
 
 const locationsStore = useLocationsStore();
 
@@ -10,10 +11,12 @@ function setBaseLocations() {
   if (!localStorageLocations) return locationsStore.setDefault();
   locationsStore.setLocations(JSON.parse(localStorageLocations));
 }
+
+const weatherData = ref<TWeather[]>([]);
+
 onMounted(async () => {
   setBaseLocations();
-  const weatherData = await getWeatherData();
-  console.log(weatherData);
+  weatherData.value = await getWeatherData();
 });
 </script>
 
