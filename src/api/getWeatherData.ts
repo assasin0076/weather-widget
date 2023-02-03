@@ -8,7 +8,9 @@ export default async () => {
     locationsStore.locations.map((location) => {
       const lat = Number(location.lat.toFixed(2));
       const lon = Number(location.lon.toFixed(2));
-      return api.get("/data/2.5/weather", { params: { lat, lon } });
+      return api.get("/data/2.5/weather", {
+        params: { lat, lon, units: "metric" },
+      });
     })
   );
   const weatherData: TWeather[] = weatherResponses.map(
