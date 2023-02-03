@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { useLocationsStore } from "@/stores/locationsStore";
+import getWeatherData from "@/api/getWeatherData";
 
 const locationsStore = useLocationsStore();
 
@@ -9,9 +10,10 @@ function setBaseLocations() {
   if (!localStorageLocations) return locationsStore.setDefault();
   locationsStore.setLocations(JSON.parse(localStorageLocations));
 }
-
-onMounted(() => {
+onMounted(async () => {
   setBaseLocations();
+  const weatherData = await getWeatherData();
+  console.log(weatherData);
 });
 </script>
 
