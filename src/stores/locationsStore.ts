@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 import type { TLocation } from "@/types/TLocation";
+import { nanoid } from "nanoid";
 
 export const useLocationsStore = defineStore("locationsStore", () => {
   const locations = ref<TLocation[]>([]);
@@ -18,6 +19,7 @@ export const useLocationsStore = defineStore("locationsStore", () => {
   function setDefault() {
     locations.value = [
       {
+        id: nanoid(),
         name: "London",
         lat: 51.5073219,
         lon: -0.1276474,
@@ -36,15 +38,22 @@ export const useLocationsStore = defineStore("locationsStore", () => {
       return isLocationsEqual(location, loc);
     }).length;
     if (isLocationAlreadyIn) return;
-    locations.value.push(location);
+    locations.value.push({ id: nanoid(), ...location });
     setLocationsToStorage();
   }
   function deleteLocation(location: TLocation) {
     locations.value = locations.value.filter((loc) => {
-      return !isLocationsEqual(location, loc);
+      return location.id !== loc.id;
     });
     setLocationsToStorage();
   }
 
-  return { locations, setDefault, setLocations, addLocation, deleteLocation };
+  return {
+    locations,
+    setDefault,
+    setLocations,
+    addLocation,
+    deleteLocation,
+    setLocationsToStorage,
+  };
 });

@@ -1,4 +1,5 @@
 export type TLocation = {
+  id?: string;
   name: string;
   localNames?: Record<string, string>;
   lat: number;
