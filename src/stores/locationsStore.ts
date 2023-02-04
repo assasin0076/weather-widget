@@ -8,6 +8,12 @@ export const useLocationsStore = defineStore("locationsStore", () => {
   function setLocationsToStorage() {
     localStorage.setItem("locations", JSON.stringify(locations.value));
   }
+  function isLocationsEqual(loc1: TLocation, loc2: TLocation) {
+    return (
+      loc1.lon.toFixed(2) == loc2.lon.toFixed(2) &&
+      loc1.lat.toFixed(2) == loc2.lat.toFixed(2)
+    );
+  }
 
   function setDefault() {
     locations.value = [
@@ -27,16 +33,15 @@ export const useLocationsStore = defineStore("locationsStore", () => {
   }
   function addLocation(location: TLocation) {
     const isLocationAlreadyIn = locations.value.filter((loc) => {
-      return location.lon === loc.lon && location.lat === loc.lat;
+      return isLocationsEqual(location, loc);
     }).length;
-    const isLocationsEmpty = !locations.value.length;
-    if (isLocationsEmpty && isLocationAlreadyIn) return;
+    if (isLocationAlreadyIn) return;
     locations.value.push(location);
     setLocationsToStorage();
   }
   function deleteLocation(location: TLocation) {
     locations.value = locations.value.filter((loc) => {
-      return location.lon !== loc.lon && location.lat !== loc.lat;
+      return !isLocationsEqual(location, loc);
     });
     setLocationsToStorage();
   }

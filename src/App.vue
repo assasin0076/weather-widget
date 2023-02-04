@@ -4,10 +4,12 @@ import { useLocationsStore } from "@/stores/locationsStore";
 import getWeatherData from "@/api/getWeatherData";
 import type { TWeather } from "@/types/TWeather";
 import WeatherItem from "@/components/weatherItem.vue";
+import AddLocationInput from "@/components/addLocationInput.vue";
 
 const locationsStore = useLocationsStore();
+const { deleteLocation } = locationsStore;
 
-const currentView = ref<"weather" | "options">("weather");
+const currentView = ref<"weather" | "options">("options");
 function switchToOptions() {
   currentView.value = "options";
 }
@@ -19,7 +21,6 @@ function setBaseLocations() {
   if (!localStorageLocations) return locationsStore.setDefault();
   locationsStore.setLocations(JSON.parse(localStorageLocations));
 }
-
 const weatherData = ref<TWeather[]>([]);
 
 onMounted(async () => {
@@ -45,10 +46,10 @@ onMounted(async () => {
           <button>бург</button>
           {{ location.name }},
           {{ location.country }}
-          <button>корз</button>
+          <button @click="deleteLocation(location)">корз</button>
         </div>
         <div>Add location</div>
-        <div><input /> <span>Ент</span></div>
+        <div><add-location-input /> <span>Ент</span></div>
       </template>
     </div>
   </div>
