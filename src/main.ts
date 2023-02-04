@@ -5,6 +5,7 @@ import VueSelect from "vue-select";
 
 import App from "./App.vue";
 
+import "@fontsource/roboto";
 import "./assets/main.scss";
 import "vue-select/dist/vue-select.css";
 
