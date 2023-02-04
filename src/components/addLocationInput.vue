@@ -28,7 +28,7 @@ function inputHandle(e: any) {
   clearTimeout(timeout);
   timeout = setTimeout(async () => {
     places.value = await getPlaces(e?.target?.value);
-  });
+  }, 300);
 }
 </script>
 
