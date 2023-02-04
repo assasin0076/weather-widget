@@ -2,19 +2,22 @@
 import { onMounted, ref } from "vue";
 import { useLocationsStore } from "@/stores/locationsStore";
 import getWeatherData from "@/api/getWeatherData";
-import capitalizeFirstLetter from "@/helpers/capitalizeFirstLetter";
 import type { TWeather } from "@/types/TWeather";
+import WeatherItem from "@/components/weatherItem.vue";
 
 const locationsStore = useLocationsStore();
 
+const currentView = ref<"weather" | "options">("weather");
+function switchToOptions() {
+  currentView.value = "options";
+}
+function switchToWeather() {
+  currentView.value = "weather";
+}
 function setBaseLocations() {
   const localStorageLocations = localStorage.getItem("locations");
   if (!localStorageLocations) return locationsStore.setDefault();
   locationsStore.setLocations(JSON.parse(localStorageLocations));
-}
-function displayVisibility(visibility: number) {
-  if (String(visibility).length < 3) return `Visibility: ${visibility}m`;
-  return `Visibility: ${(visibility / 1000).toFixed(1)}km`;
 }
 
 const weatherData = ref<TWeather[]>([]);
@@ -29,27 +32,24 @@ onMounted(async () => {
 <template>
   <div class="w-screen h-screen flex items-center justify-center bg-gray-100">
     <div class="bg-white h-[400px] w-[400px]">
-      <div v-for="item in weatherData" :key="item.id">
-        <div>{{ item.name }}, {{ item.sys.country }}</div>
-        <div>
-          <img
-            :src="`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`"
-          />
-          <div>{{ Math.trunc(item.main.temp) }}°C</div>
+      <template v-if="currentView === 'weather'">
+        <button @click="switchToOptions">шестеренка</button>
+        <weather-item v-for="item in weatherData" :key="item.id" :item="item" />
+      </template>
+      <template v-if="currentView === 'options'">
+        <div>options<button @click="switchToWeather">Крестик</button></div>
+        <div
+          v-for="location in locationsStore.locations"
+          :key="location.lon + location.lat"
+        >
+          <button>бург</button>
+          {{ location.name }},
+          {{ location.country }}
+          <button>корз</button>
         </div>
-        <div>
-          Feels like {{ item.main.feels_like }}°C.
-          {{ capitalizeFirstLetter(item.weather[0].description) }}. No data.
-        </div>
-        <div>
-          <div>{{ item.wind.speed.toFixed(1) }}m/s SSE</div>
-          <div>{{ item.wind.deg }}hPa</div>
-        </div>
-        <div>
-          <div>Humidity: {{ item.main.humidity }}%</div>
-          <div>{{ displayVisibility(item.visibility) }}</div>
-        </div>
-      </div>
+        <div>Add location</div>
+        <div><input /> <span>Ент</span></div>
+      </template>
     </div>
   </div>
 </template>
