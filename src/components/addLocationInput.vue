@@ -33,5 +33,12 @@ function inputHandle(e: any) {
 </script>
 
 <template>
-  <v-select v-model="searchValue" @input="inputHandle" :options="places" />
+  <v-select v-model="searchValue" @input="inputHandle" :options="places">
+    <template #open-indicator="{ attributes }">
+      <span v-bind="attributes"></span>
+    </template>
+    <template #no-options="{}">
+      <div></div>
+    </template>
+  </v-select>
 </template>
