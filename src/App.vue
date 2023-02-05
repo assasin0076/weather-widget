@@ -1,5 +1,3 @@
 <template>
-  <div>
-    <weather-widget></weather-widget>
-  </div>
+  <div></div>
 </template>

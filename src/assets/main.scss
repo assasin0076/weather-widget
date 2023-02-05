@@ -1,0 +1,12 @@
+@import "reset.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "vue-select/dist/vue-select.css";
+@import "@fontsource/roboto";
+
+body {
+  font-family: "Roboto", serif;
+}

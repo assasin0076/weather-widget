@@ -1,10 +1,18 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 import type { TLocation } from "@/types/TLocation";
+import type { TWeather } from "@/types/TWeather";
 import { nanoid } from "nanoid";
+import getWeatherData from "@/api/getWeatherData";
 
 export const useLocationsStore = defineStore("locationsStore", () => {
   const locations = ref<TLocation[]>([]);
+
+  const weatherData = ref<TWeather[]>([]);
+
+  function setWeatherData(data: TWeather[]) {
+    weatherData.value = data;
+  }
 
   function setLocationsToStorage() {
     localStorage.setItem("locations", JSON.stringify(locations.value));
@@ -32,6 +40,7 @@ export const useLocationsStore = defineStore("locationsStore", () => {
   function setLocations(incomingLocations: TLocation[]) {
     locations.value = incomingLocations;
     setLocationsToStorage();
+    getWeatherData();
   }
   function addLocation(location: TLocation) {
     const isLocationAlreadyIn = locations.value.filter((loc) => {
@@ -40,16 +49,20 @@ export const useLocationsStore = defineStore("locationsStore", () => {
     if (isLocationAlreadyIn) return;
     locations.value.push({ id: nanoid(), ...location });
     setLocationsToStorage();
+    getWeatherData();
   }
   function deleteLocation(location: TLocation) {
     locations.value = locations.value.filter((loc) => {
       return location.id !== loc.id;
     });
     setLocationsToStorage();
+    getWeatherData();
   }
 
   return {
     locations,
+    weatherData,
+    setWeatherData,
     setDefault,
     setLocations,
     addLocation,

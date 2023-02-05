@@ -16,5 +16,5 @@ export default async () => {
   const weatherData: TWeather[] = weatherResponses.map(
     (response) => response.data
   );
-  return weatherData;
+  locationsStore.setWeatherData(weatherData);
 };

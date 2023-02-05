@@ -2,7 +2,6 @@
 import { onMounted, ref } from "vue";
 import { useLocationsStore } from "@/stores/locationsStore";
 import getWeatherData from "@/api/getWeatherData";
-import type { TWeather } from "@/types/TWeather";
 import WeatherItem from "@/components/weatherItem.vue";
 import Draggable from "vuedraggable";
 import { labelStyle, toggleIconStyle, textStyle } from "@/styles/styles";
@@ -24,12 +23,11 @@ function setBaseLocations() {
 }
 function dragHandle() {
   locationsStore.setLocationsToStorage();
+  getWeatherData();
 }
-const weatherData = ref<TWeather[]>([]);
 
-onMounted(async () => {
+onMounted(() => {
   setBaseLocations();
-  weatherData.value = await getWeatherData();
 });
 </script>
 
@@ -49,7 +47,11 @@ onMounted(async () => {
             ></path>
           </svg>
         </button>
-        <weather-item v-for="item in weatherData" :key="item.id" :item="item" />
+        <weather-item
+          v-for="item in locationsStore.weatherData"
+          :key="item.id"
+          :item="item"
+        />
       </template>
       <template v-if="currentView === 'settings'">
         <button @click="switchToWeather" :class="toggleIconStyle">
@@ -109,8 +111,7 @@ onMounted(async () => {
                 </svg>
               </button>
               <span
-                class="mb-0.5 text-ellipsis max-w-[10px]"
-                style="white-space: nowrap; overflow: hidden"
+                class="mb-0.5 text-ellipsis overflow-hidden whitespace-nowrap"
               >
                 {{ element.name }}, {{ element.country }}
               </span>
