@@ -1,19 +1,11 @@
 import { createApp } from "vue";
-import { createPinia } from "pinia";
-import VueSelect from "vue-select";
 import vueCustomElement from "vue-custom-element";
-
+import useWeatherWidget from "./weatherWidget.js";
 import App from "./App.vue";
-
-import "@fontsource/roboto";
-import "./assets/main.scss";
-import "vue-select/dist/vue-select.css";
+useWeatherWidget();
 
 const app = createApp(App);
 
 app.use(vueCustomElement);
-
-app.component("v-select", VueSelect);
-app.use(createPinia());
 
 app.mount("#app");

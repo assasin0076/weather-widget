@@ -1,8 +1,9 @@
+@import "reset.css";
+@import "vue-select/dist/vue-select.css";
+@import "@fontsource/roboto";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import "reset.scss";
 
 body {
   font-family: "Roboto";
