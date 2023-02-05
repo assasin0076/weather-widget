@@ -6,6 +6,7 @@ import type { TWeather } from "@/types/TWeather";
 import WeatherItem from "@/components/weatherItem.vue";
 import Draggable from "vuedraggable";
 import { labelStyle, toggleIconStyle, textStyle } from "@/styles/styles";
+import AddLocationInput from "@/components/addLocationInput.vue";
 const locationsStore = useLocationsStore();
 const { deleteLocation } = locationsStore;
 
@@ -107,9 +108,12 @@ onMounted(async () => {
                   />
                 </svg>
               </button>
-              <div class="mb-0.5">
+              <span
+                class="mb-0.5 text-ellipsis max-w-[10px]"
+                style="white-space: nowrap; overflow: hidden"
+              >
                 {{ element.name }}, {{ element.country }}
-              </div>
+              </span>
               <button
                 @click="deleteLocation(element)"
                 class="ml-auto hover:text-red-500 transition-colors"
@@ -146,21 +150,10 @@ onMounted(async () => {
           </template>
         </draggable>
         <div :class="labelStyle" class="mb-2">Add location</div>
-        <div></div>
+        <div><add-location-input /></div>
       </template>
     </div>
   </div>
 </template>
 
-<style>
-@import "./assets/reset.css";
-@import "vue-select/dist/vue-select.css";
-@import "@fontsource/roboto";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-  font-family: "Roboto";
-}
-</style>
+<style></style>
