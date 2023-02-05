@@ -36,6 +36,7 @@ export const useLocationsStore = defineStore("locationsStore", () => {
       },
     ];
     setLocationsToStorage();
+    getWeatherData();
   }
   function setLocations(incomingLocations: TLocation[]) {
     locations.value = incomingLocations;
