@@ -1,7 +1,7 @@
 # test weather widget
 
 If you want to develop the widget:
-1. Add to App.vue <weather-widget /> tag
+1. Add to App.vue `<weather-widget />` tag
 2. Remove register() from the end of the weather-widget.js file
 3. In main.js call register() from weather-widget.js before app.mount()
 4. Have fun. It should be
